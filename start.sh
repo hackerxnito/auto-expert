@@ -3,13 +3,22 @@
 # Bind Nginx to Render's dynamic port
 sed -i "s/listen 10000;/listen ${PORT:-10000};/g" /etc/nginx/sites-available/default
 
-# Generate the .env file with your key hardcoded directly
+# Create the SQLite database file and folder structure
+mkdir -p database
+touch database/database.sqlite
+
+# Generate the .env file dynamically
 echo "APP_ENV=production" > .env
 echo "APP_DEBUG=true" >> .env
 echo "APP_KEY=base64:Fm/mIxrhYCYJGRGemHevOJb7THiogErhIx+PGH8fCZY=" >> .env
 echo "APP_URL=https://auto-expert-ja1r.onrender.com" >> .env
+echo "DB_CONNECTION=sqlite" >> .env
+echo "DB_DATABASE=/var/www/html/database/database.sqlite" >> .env
 
-# Clear any lingering cache
+# Run migrations so tables like 'sessions' are created automatically
+php artisan migrate --force
+
+# Clear caches
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
