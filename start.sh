@@ -3,11 +3,11 @@
 # Bind Nginx to Render's dynamic port
 sed -i "s/listen 10000;/listen ${PORT:-10000};/g" /etc/nginx/sites-available/default
 
-# Generate a .env file dynamically so PHP-FPM / Laravel can see the variables
-echo "APP_ENV=${APP_ENV:-production}" > .env
-echo "APP_DEBUG=${APP_DEBUG:-true}" >> .env
-echo "APP_KEY=${APP_KEY}" >> .env
-echo "APP_URL=${APP_URL}" >> .env
+# Generate the .env file with your key hardcoded directly
+echo "APP_ENV=production" > .env
+echo "APP_DEBUG=true" >> .env
+echo "APP_KEY=base64:Fm/mIxrhYCYJGRGemHevOJb7THiogErhIx+PGH8fCZY=" >> .env
+echo "APP_URL=https://auto-expert-ja1r.onrender.com" >> .env
 
 # Clear any lingering cache
 php artisan config:clear
