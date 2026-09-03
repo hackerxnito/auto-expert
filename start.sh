@@ -15,6 +15,11 @@ echo "APP_URL=https://auto-expert-ja1r.onrender.com" >> .env
 echo "DB_CONNECTION=sqlite" >> .env
 echo "DB_DATABASE=/var/www/html/database/database.sqlite" >> .env
 
+# Grant write permissions to the web server user
+chown -R www-data:www-data database storage bootstrap/cache
+chmod -R 775 database storage bootstrap/cache
+chmod 664 database/database.sqlite
+
 # Run migrations so tables like 'sessions' are created automatically
 php artisan migrate --force
 
